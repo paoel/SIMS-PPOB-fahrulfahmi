@@ -5,14 +5,13 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import TopUp from "./pages/TopUp";
 import Transaction from "./pages/Transaction";
-import Akun from "./pages/Akun"; // Import halaman Akun
+import Akun from "./pages/Akun"; 
 import Navbar from "./components/Navbar";
 
 const App = () => {
   return (
     <Router>
       <div>
-        {/* Navbar akan tampil di semua halaman kecuali Login dan Register */}
         <Routes>
           <Route
             path="*"
@@ -28,7 +27,6 @@ const App = () => {
               </>
             }
           />
-          {/* Rute untuk Login dan Register */}
           <Route path="/" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Routes>

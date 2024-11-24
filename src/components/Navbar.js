@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom"; // Import Link dan useLocation
+import { Link, useLocation } from "react-router-dom"; 
 
 const Navbar = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // State untuk menu responsif
-  const location = useLocation(); // Untuk mengetahui rute aktif
+  const [isMenuOpen, setIsMenuOpen] = useState(false); 
+  const location = useLocation(); 
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -11,11 +11,10 @@ const Navbar = () => {
 
   return (
     <nav className="flex items-center justify-between px-6 py-4 bg-white shadow-md">
-      {/* Logo Section */}
       <div className="flex items-center space-x-2">
         <Link to="/dashboard" className="flex items-center space-x-2">
           <img
-            src="/assets/logo.png" // Pastikan file logo ada di path ini
+            src="/assets/logo.png" 
             alt="Logo"
             className="h-8 w-8 cursor-pointer"
           />
@@ -23,7 +22,6 @@ const Navbar = () => {
         </Link>
       </div>
 
-      {/* Navigation Links */}
       <div className="hidden md:flex items-center space-x-6">
         <Link
           to="/topup"
@@ -51,7 +49,6 @@ const Navbar = () => {
         </Link>
       </div>
 
-      {/* Mobile Menu Button */}
       <button
         onClick={toggleMenu}
         className="block md:hidden text-gray-800 focus:outline-none"
@@ -59,7 +56,6 @@ const Navbar = () => {
         ☰
       </button>
 
-      {/* Mobile Menu */}
       {isMenuOpen && (
         <div className="absolute top-14 left-0 w-full bg-white shadow-md md:hidden">
           <Link

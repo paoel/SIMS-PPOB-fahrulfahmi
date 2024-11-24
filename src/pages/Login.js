@@ -10,22 +10,18 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  // Fungsi untuk toggle password visibility
   const togglePassword = () => {
     setShowPassword(!showPassword);
   };
 
-  // Fungsi validasi email
   const validateEmail = (email) => {
     const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return regex.test(email);
   };
 
-  // Fungsi untuk menangani login
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    // Validasi input
     if (!validateEmail(email)) {
       setErrorMessage("Format email tidak valid.");
       return;
@@ -39,7 +35,6 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      // Kirim request ke API login
       const response = await fetch(
         "https://take-home-test-api.nutech-integrasi.com/login",
         {
@@ -57,20 +52,17 @@ const Login = () => {
       const data = await response.json();
 
       if (response.ok && data.status === 0) {
-        const token = data.data?.token; // Ambil token dari respons API
+        const token = data.data?.token; 
 
         if (token) {
-          // Simpan token JWT di localStorage
           localStorage.setItem("jwtToken", token);
           console.log("Token berhasil disimpan:", token);
 
-          // Arahkan ke halaman dashboard setelah login berhasil
           navigate("/dashboard");
         } else {
           throw new Error("Token tidak ditemukan di respons API.");
         }
       } else {
-        // Tampilkan pesan error dari API jika login gagal
         setErrorMessage(data.message || "Login gagal. Periksa email dan password Anda.");
       }
     } catch (error) {
@@ -83,7 +75,6 @@ const Login = () => {
 
   return (
     <div className="flex flex-col md:flex-row min-h-screen">
-      {/* Kiri: Form Login */}
       <div className="w-full md:w-1/2 bg-white flex flex-col justify-center px-8 md:px-12">
         <div className="max-w-md mx-auto">
           <div className="mb-8 text-center">
@@ -122,7 +113,6 @@ const Login = () => {
               </span>
             </div>
 
-            {/* Menampilkan error message jika ada */}
             {errorMessage && (
               <p className="text-red-500 text-center mb-4">{errorMessage}</p>
             )}
@@ -144,7 +134,6 @@ const Login = () => {
         </div>
       </div>
 
-      {/* Kanan: Gambar */}
       <div className="hidden md:flex w-full md:w-1/2 bg-gray-50 items-center justify-center">
         <img
           src="/assets/Illustrasi.png"

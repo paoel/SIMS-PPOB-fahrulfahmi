@@ -15,7 +15,6 @@ const Profile = () => {
   const [notification, setNotification] = useState(""); 
   const navigate = useNavigate();
 
-  // Fetch profile data
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -44,7 +43,7 @@ const Profile = () => {
         });
       } catch (error) {
         alert(error.message);
-        navigate("/"); // Redirect jika token tidak valid
+        navigate("/"); 
       }
     };
 
@@ -55,7 +54,7 @@ const Profile = () => {
     const file = e.target.files[0];
     if (file && file.size <= 100 * 1024 && file.type.startsWith("image/")) {
       setSelectedFile(file);
-      setNotification(""); // Reset notifikasi jika file valid
+      setNotification(""); 
     } else {
       setNotification("Ukuran file maksimum adalah 100 KB dan harus berupa gambar.");
     }
@@ -88,7 +87,7 @@ const Profile = () => {
       if (response.ok) {
         setProfile((prev) => ({
           ...prev,
-          profilePicture: `${data.data.profile_image}?timestamp=${new Date().getTime()}`, // Tangani cache
+          profilePicture: `${data.data.profile_image}?timestamp=${new Date().getTime()}`, 
         }));
         setNotification("Gambar berhasil diunggah.");
       } else {
@@ -184,7 +183,6 @@ const Profile = () => {
           )}
         </div>
 
-        {/* Notifikasi */}
         {notification && (
           <div
             className={`mt-4 p-2 rounded-lg ${
@@ -197,7 +195,6 @@ const Profile = () => {
           </div>
         )}
 
-        {/* Informasi Profil */}
         <div className="mt-6 space-y-4">
           <div>
             <label className="text-sm font-medium text-gray-500">Email</label>
@@ -240,7 +237,6 @@ const Profile = () => {
           </div>
         </div>
 
-        {/* Tombol Aksi */}
         <div className="mt-6 space-y-4">
           {isEditing ? (
             <>
@@ -257,7 +253,6 @@ const Profile = () => {
               >
                 Batalkan
               </button>
-              {/* Tombol Upload Gambar */}
               <button
                 onClick={handlePictureUpload}
                 className="w-full py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"

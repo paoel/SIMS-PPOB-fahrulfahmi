@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
-import { useNavigate } from "react-router-dom"; // Untuk navigasi setelah registrasi
+import { useNavigate } from "react-router-dom"; 
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -15,9 +15,8 @@ const Register = () => {
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate(); // Untuk navigasi setelah registrasi
+  const navigate = useNavigate(); 
 
-  // Fungsi untuk menangani perubahan input
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
@@ -27,17 +26,15 @@ const Register = () => {
     });
 
     if (name === "confirmPassword" || name === "password") {
-      setError(""); // Reset pesan error saat mengetik
+      setError(""); 
     }
   };
 
-  // Fungsi untuk memvalidasi email
   const validateEmail = (email) => {
     const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return regex.test(email);
   };
 
-  // Fungsi untuk memvalidasi password
   const validatePasswords = () => {
     if (formData.password !== formData.confirmPassword) {
       setError("Password dan konfirmasi password tidak cocok!");
@@ -46,11 +43,9 @@ const Register = () => {
     }
   };
 
-  // Fungsi untuk menangani submit registrasi
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validasi input
     if (!validateEmail(formData.email)) {
       setError("Format email tidak valid.");
       return;
@@ -66,12 +61,10 @@ const Register = () => {
       return;
     }
 
-    // Reset error message dan tampilkan loading
     setError("");
     setIsLoading(true);
 
     try {
-      // Kirim request registrasi ke API
       const registerResponse = await fetch(
         "https://take-home-test-api.nutech-integrasi.com/registration",
         {
@@ -82,8 +75,8 @@ const Register = () => {
           body: JSON.stringify({
             email: formData.email,
             password: formData.password,
-            first_name: formData.firstName, // Format sesuai API
-            last_name: formData.lastName, // Format sesuai API
+            first_name: formData.firstName, 
+            last_name: formData.lastName, 
           }),
         }
       );
@@ -91,29 +84,23 @@ const Register = () => {
       const registerData = await registerResponse.json();
 
       if (registerResponse.ok) {
-        // Tampilkan pesan sukses jika registrasi berhasil
         setSuccessMessage("Registrasi berhasil! Anda dapat login sekarang.");
         console.log("Data pendaftaran berhasil disimpan:", registerData);
 
-        // Redirect ke halaman login setelah beberapa detik
         setTimeout(() => {
-          navigate("/"); // Halaman login
+          navigate("/"); 
         }, 2000);
       } else {
-        // Tampilkan pesan error jika registrasi gagal
         setError(registerData.message || "Registrasi gagal. Silakan coba lagi.");
       }
     } catch (error) {
-      // Tangani error jaringan atau error lainnya
       setError("Terjadi kesalahan. Silakan coba lagi nanti.");
       console.error("Error saat registrasi:", error);
     } finally {
-      // Matikan loading setelah selesai
       setIsLoading(false);
     }
   };
 
-  // Fungsi untuk toggle password visibility
   const togglePassword = () => {
     setShowPassword(!showPassword);
   };
@@ -233,7 +220,6 @@ const Register = () => {
         </div>
       </div>
 
-      {/* Ilustrasi Samping */}
       <div className="w-1/2 bg-gray-50 flex items-center justify-center">
         <img
           src="/assets/Illustrasi.png"

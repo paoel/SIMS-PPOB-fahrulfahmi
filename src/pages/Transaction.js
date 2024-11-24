@@ -1,28 +1,26 @@
 import React, { useState, useEffect } from "react";
 
 const Transaction = () => {
-  const [profile, setProfile] = useState(null); // Data profil pengguna
-  const [saldo, setSaldo] = useState(null); // Data saldo pengguna
-  const [transactions, setTransactions] = useState([]); // Data transaksi pengguna
-  const [showBalance, setShowBalance] = useState(false); // Toggle saldo
-  const [loadingProfile, setLoadingProfile] = useState(true); // Loading state untuk profil
-  const [loadingTransactions, setLoadingTransactions] = useState(false); // Loading state untuk transaksi
-  const [error, setError] = useState(null); // Error state
-  const [offset, setOffset] = useState(0); // Offset untuk pagination transaksi
-  const limit = 5; // Jumlah transaksi per halaman
+  const [profile, setProfile] = useState(null); 
+  const [saldo, setSaldo] = useState(null);
+  const [transactions, setTransactions] = useState([]); 
+  const [showBalance, setShowBalance] = useState(false); 
+  const [loadingProfile, setLoadingProfile] = useState(true); 
+  const [loadingTransactions, setLoadingTransactions] = useState(false);
+  const [error, setError] = useState(null); 
+  const [offset, setOffset] = useState(0); 
+  const limit = 5; 
 
   const PROFILE_API_URL = "https://take-home-test-api.nutech-integrasi.com/profile";
   const BALANCE_API_URL = "https://take-home-test-api.nutech-integrasi.com/balance";
   const TRANSACTION_API_URL = "https://take-home-test-api.nutech-integrasi.com/transaction/history";
 
-  // Fetch Profil dan Saldo
   useEffect(() => {
     const fetchProfileAndBalance = async () => {
       try {
-        const token = localStorage.getItem("jwtToken"); // Ambil token dari localStorage
+        const token = localStorage.getItem("jwtToken"); 
         if (!token) throw new Error("Token tidak ditemukan. Silakan login kembali.");
 
-        // Fetch profil pengguna
         const profileResponse = await fetch(PROFILE_API_URL, {
           method: "GET",
           headers: {
@@ -35,7 +33,6 @@ const Transaction = () => {
         const profileData = await profileResponse.json();
         setProfile(profileData.data);
 
-        // Fetch saldo pengguna
         const balanceResponse = await fetch(BALANCE_API_URL, {
           method: "GET",
           headers: {
@@ -57,7 +54,7 @@ const Transaction = () => {
     fetchProfileAndBalance();
   }, []);
 
-  // Fetch Transaksi
+
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
@@ -80,17 +77,15 @@ const Transaction = () => {
         if (!response.ok) throw new Error("Gagal mengambil data transaksi.");
         const transactionData = await response.json();
 
-        // Gabungkan transaksi baru dan yang sudah ada, pastikan tidak ada duplikasi berdasarkan invoice_number
         setTransactions((prevTransactions) => {
           const newTransactions = transactionData.data.records;
 
-          // Gabungkan dan hilangkan duplikasi berdasarkan invoice_number
           const allTransactions = [...prevTransactions, ...newTransactions];
           const uniqueTransactions = Array.from(
             new Map(allTransactions.map((item) => [item.invoice_number, item])).values()
           );
 
-          return uniqueTransactions; // Set transaksi yang sudah unik
+          return uniqueTransactions; 
         });
       } catch (err) {
         setError(err.message);
@@ -100,10 +95,10 @@ const Transaction = () => {
     };
 
     fetchTransactions();
-  }, [offset]); // Memuat ulang data transaksi saat offset berubah
+  }, [offset]); 
 
   const handleShowMore = () => {
-    setOffset((prevOffset) => prevOffset + limit); // Pagination transaksi
+    setOffset((prevOffset) => prevOffset + limit); 
   };
 
   const toggleBalance = () => {
@@ -113,7 +108,6 @@ const Transaction = () => {
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-50">
       <div className="max-w-7xl w-full p-6 bg-white shadow-md rounded-lg">
-        {/* Header */}
         <div className="flex justify-between items-center">
           <div className="flex flex-col items-left space-y-2">
             <img
@@ -129,7 +123,6 @@ const Transaction = () => {
             </div>
           </div>
 
-          {/* Saldo */}
           <div
             className="bg-red-500 text-white rounded-lg shadow-md p-10 w-1/2 relative"
             style={{
@@ -156,7 +149,6 @@ const Transaction = () => {
           </div>
         </div>
 
-        {/* Daftar Transaksi */}
         <div className="mt-8">
           <h3 className="text-lg font-bold text-gray-800 mb-4">Semua Transaksi</h3>
           {error ? (
@@ -195,7 +187,6 @@ const Transaction = () => {
             </ul>
           )}
 
-          {/* Tombol Show More */}
           {!loadingTransactions && transactions.length > 0 && (
             <button
               onClick={handleShowMore}

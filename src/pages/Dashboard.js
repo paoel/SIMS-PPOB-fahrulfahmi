@@ -32,7 +32,6 @@ const Dashboard = () => {
     "/assets/banner 5.png",
   ];
 
-  // Navigasi slider promo
   const goToPrevious = () => {
     const newIndex = currentIndex === 0 ? promos.length - 1 : currentIndex - 1;
     setCurrentIndex(newIndex);
@@ -43,19 +42,16 @@ const Dashboard = () => {
     setCurrentIndex(newIndex);
   };
 
-  // Tampilkan atau sembunyikan saldo
   const toggleBalance = () => {
     setShowBalance(!showBalance);
   };
 
-  // Fetch data profil dan saldo
   useEffect(() => {
     const fetchProfileAndBalance = async () => {
       try {
         const token = localStorage.getItem("jwtToken");
         if (!token) throw new Error("Token tidak ditemukan. Silakan login kembali.");
 
-        // Fetch profil
         const profileResponse = await fetch(
           "https://take-home-test-api.nutech-integrasi.com/profile",
           {
@@ -77,7 +73,6 @@ const Dashboard = () => {
           throw new Error(profileData.message || "Gagal memuat profil.");
         }
 
-        // Fetch saldo
         const balanceResponse = await fetch(
           "https://take-home-test-api.nutech-integrasi.com/balance",
           {
@@ -107,7 +102,6 @@ const Dashboard = () => {
     fetchProfileAndBalance();
   }, []);
 
-  // Error handling
   if (error) {
     return (
       <div className="p-6 bg-red-100 text-red-500 rounded-lg">
@@ -137,7 +131,6 @@ const Dashboard = () => {
               </h2>
             </div>
           </div>
-          {/* Saldo */}
           <div
             className="bg-red-500 text-white rounded-lg shadow-md p-10 w-1/2 relative"
             style={{
@@ -165,7 +158,6 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Layanan */}
         <h2 className="text-xl font-semibold mt-8">Layanan Kami</h2>
         <div className="grid grid-cols-3 sm:grid-cols-5 lg:grid-cols-12 gap-5 mt-8">
           {services.map((service, index) => (
@@ -179,7 +171,6 @@ const Dashboard = () => {
           ))}
         </div>
 
-        {/* Promo */}
         <h2 className="text-xl font-semibold mt-8">Temukan Promo Menarik</h2>
         <div className="relative mt-4">
           <div

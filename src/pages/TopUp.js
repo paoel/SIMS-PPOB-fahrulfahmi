@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from "react";
 
 const TopUp = () => {
-  const [profile, setProfile] = useState(null); // Profil pengguna
-  const [saldo, setSaldo] = useState(0); // Saldo pengguna
-  const [nominal, setNominal] = useState(""); // Nominal Top Up
-  const [isButtonDisabled, setIsButtonDisabled] = useState(true); // Tombol Top Up
-  const [isLoading, setIsLoading] = useState(false); // Indikator loading
-  const [error, setError] = useState(null); // Pesan error
-  const [successMessage, setSuccessMessage] = useState(null); // Pesan sukses
-  const [showBalance, setShowBalance] = useState(false); // State untuk kontrol tampilan saldo
-  const [loadingProfile, setLoadingProfile] = useState(true); // Status loading profil
+  const [profile, setProfile] = useState(null); 
+  const [saldo, setSaldo] = useState(0); 
+  const [nominal, setNominal] = useState(""); 
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true); 
+  const [isLoading, setIsLoading] = useState(false); 
+  const [error, setError] = useState(null); 
+  const [successMessage, setSuccessMessage] = useState(null); 
+  const [showBalance, setShowBalance] = useState(false); 
+  const [loadingProfile, setLoadingProfile] = useState(true); 
 
   const PROFILE_API_URL = "https://take-home-test-api.nutech-integrasi.com/profile";
   const BALANCE_API_URL = "https://take-home-test-api.nutech-integrasi.com/balance";
   const TOPUP_API_URL = "https://take-home-test-api.nutech-integrasi.com/topup";
 
-  // Fetch Profil dan Saldo
   useEffect(() => {
     const fetchProfileAndSaldo = async () => {
       try {
@@ -26,7 +25,6 @@ const TopUp = () => {
           return;
         }
 
-        // Fetch Profil
         const profileResponse = await fetch(PROFILE_API_URL, {
           method: "GET",
           headers: {
@@ -48,7 +46,6 @@ const TopUp = () => {
         const profileData = await profileResponse.json();
         setProfile(profileData.data);
 
-        // Fetch Saldo
         const saldoResponse = await fetch(BALANCE_API_URL, {
           method: "GET",
           headers: {
@@ -71,29 +68,27 @@ const TopUp = () => {
     };
 
     fetchProfileAndSaldo();
-  }, []); // Fetch profile and balance only once on component mount
-
-  // Validasi Nominal
+  }, []); 
   const handleNominalChange = (value) => {
-    const parsedValue = parseInt(value.replace(/\D/g, "")); // Hanya angka
+    const parsedValue = parseInt(value.replace(/\D/g, "")); 
     if (!parsedValue || parsedValue <= 0) {
       setIsButtonDisabled(true);
       setError("Nominal harus angka positif.");
     } else {
       setIsButtonDisabled(false);
-      setError(null); // Hapus error jika valid
+      setError(null); 
     }
     setNominal(parsedValue || "");
   };
 
-  // Shortcut Nominal
+
   const handleShortcutClick = (value) => {
     setNominal(value);
     setIsButtonDisabled(false);
     setError(null);
   };
 
-  // Fungsi Top Up
+
   const handleTopUp = async () => {
     setIsLoading(true);
     try {
@@ -115,7 +110,7 @@ const TopUp = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ top_up_amount: nominal }), // Gunakan parameter sesuai ketentuan
+        body: JSON.stringify({ top_up_amount: nominal }), 
       });
 
       const data = await response.json();
@@ -131,11 +126,9 @@ const TopUp = () => {
       }
 
       setSuccessMessage("Top Up berhasil! Saldo Anda telah diperbarui.");
-      setTimeout(() => setSuccessMessage(null), 5000); // Hapus pesan sukses setelah 5 detik
-
-      // Update saldo berdasarkan data terbaru yang dikirimkan oleh API
-      const updatedSaldo = data.data.balance; // Asumsi API mengembalikan saldo yang baru
-      setSaldo(updatedSaldo); // Perbarui saldo dari API
+      setTimeout(() => setSuccessMessage(null), 5000); 
+      const updatedSaldo = data.data.balance; 
+      setSaldo(updatedSaldo); 
       setNominal("");
       setIsButtonDisabled(true);
     } catch (error) {
@@ -145,7 +138,6 @@ const TopUp = () => {
     }
   };
 
-  // Fungsi untuk toggle status tampilan saldo
   const toggleBalance = () => {
     setShowBalance(!showBalance);
   };
@@ -170,7 +162,6 @@ const TopUp = () => {
             </div>
           </div>
 
-          {/* Saldo */}
           <div
             className="bg-red-500 text-white rounded-lg shadow-md p-10 w-1/2 relative"
             style={{
